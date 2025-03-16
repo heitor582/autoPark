@@ -21,7 +21,6 @@ public class UserDAO extends DAO {
 			String sql = "INSERT INTO users (id, username, password, is_admin, created_at, updated_at) "
 				       + "VALUES ('"+user.getId()+ "'::UUID, '" + user.getUsername() + "', '"
 				       + this.toMD5(user.getPassword()) + "', '" + user.isAdmin() + "', '" + user.getCreatedAt() + "', '" + user.getUpdatedAt() + "');";
-			System.out.println(sql);
 			st.executeUpdate(sql);
 			st.close();
 			status = true;
