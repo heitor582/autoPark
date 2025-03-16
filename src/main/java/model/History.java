@@ -1,12 +1,14 @@
 package model;
 
+import java.math.BigInteger;
 import java.time.Instant;
+import java.util.UUID;
 
 public class History {
-	private int id;
+	private UUID id;
 	private String carPlate;
-	private int garageId;
-	private int price;
+	private UUID garageId;
+	private BigInteger price;
 	private Instant createdAt;
 	private Instant deletedAt;
 }

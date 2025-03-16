@@ -14,3 +14,14 @@ curl -X POST http://localhost:3000/user/login \
            "username": "exampleUser",
            "password": "securePassword123"
          }'
+
+// create a garage
+curl -X POST http://localhost:3000/garage \
+     -H "Content-Type: application/json" \
+     -d '{
+           "name": "exampleUser",
+           "ownerId": "92eada82-b779-45de-a3af-c3ac6bc2807e"
+         }'
+
+// list all garages
+curl http://localhost:3000/user/92eada82-b779-45de-a3af-c3ac6bc2807e/garage

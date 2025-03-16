@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS garages (
     id UUID PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     owner_id UUID NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT now(),
     updated_at TIMESTAMP NOT NULL DEFAULT now(),
