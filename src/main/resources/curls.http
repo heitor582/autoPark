@@ -1,0 +1,16 @@
+// create an user
+curl -X POST http://localhost:3000/user \
+     -H "Content-Type: application/json" \
+     -d '{
+           "username": "exampleUser",
+           "password": "securePassword123",
+           "isAdmin": true
+         }'
+
+// login
+curl -X POST http://localhost:3000/user/login \
+     -H "Content-Type: application/json" \
+     -d '{
+           "username": "exampleUser",
+           "password": "securePassword123"
+         }'

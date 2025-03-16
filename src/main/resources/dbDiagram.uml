@@ -1,0 +1,43 @@
+@startuml
+entity users {
+    *id : UUID [PK]
+    --
+    username : VARCHAR(255)
+    password : VARCHAR(255)
+    is_admin : BOOLEAN
+    created_at : TIMESTAMP
+    updated_at : TIMESTAMP
+}
+
+entity garages {
+    *id : UUID [PK]
+    --
+    username : VARCHAR(255)
+    owner_id : UUID [FK -> users.id]
+    created_at : TIMESTAMP
+    updated_at : TIMESTAMP
+}
+
+entity garage_histories {
+    *id : UUID [PK]
+    --
+    garage_id : UUID [FK -> garages.id]
+    price : BIGINT
+    car_plate : TEXT
+    created_at : TIMESTAMP
+    deleted_at : TIMESTAMP
+}
+
+entity garage_prices {
+    *id : UUID [PK]
+    --
+    above_time : INT
+    garage_id : UUID [FK -> garages.id]
+    price : BIGINT
+    created_at : TIMESTAMP
+}
+
+users ||--o{ garages : owns
+garages ||--o{ garage_histories : has
+garages ||--o{ garage_prices : has
+@enduml
