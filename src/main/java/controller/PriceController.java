@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import model.Garage;
-import service.GarageService;
-import spark.Spark;
 import utils.Json;
 
 import java.util.List;
@@ -16,51 +14,46 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
-public class GarageController implements Routes{
-    private final GarageService garageService;
-
-    public GarageController(final GarageService garageService) {
-        this.garageService = garageService;
-    }
-
+public class PriceController implements Routes{
     private void create(){
-        post("/user/:ownerId/garage", (request, response) -> {
+        post("/user/:ownerId/garage/:garageId", (request, response) -> {
             String body = request.body();
             JsonObject jsonObject = JsonParser.parseString(body).getAsJsonObject();
-            String username = jsonObject.get("name").getAsString();
-            UUID ownerId = UUID.fromString(request.params(":ownerId"));
-
-            boolean success = garageService.create(username, ownerId);
+            //TODO
+            boolean success = priceService.create();
             response.status(success ? 201 : 400);
-            return success ? "Create successfully" : "error for create garage";
+            return success ? "Create successfully" : "error for create price";
         });
     }
 
     private void getAll(){
-        get("/user/:ownerId/garage", (request, response) -> {
-            UUID ownerId = UUID.fromString(request.params(":ownerId"));
-
-            List<Garage> garages = garageService.getAllBy(ownerId);
-            response.status(garages.isEmpty() ? 204 : 200);
-            return new Gson()
-                            .toJsonTree(Json.writeValueAsString(garages));
-        });
-    }
-    private void deleteById(){
-        delete("/user/:ownerId/garage/:garageId", (request, response) -> {
+        get("/user/:ownerId/garage/:garageId/price", (request, response) -> {
             UUID ownerId = UUID.fromString(request.params(":ownerId"));
             UUID garageId = UUID.fromString(request.params(":garageId"));
 
+            List<Garage> garages = priceService.getAllBy(ownerId, garageId);
+            response.status(garages.isEmpty() ? 204 : 200);
+            return new Gson()
+                    .toJsonTree(Json.writeValueAsString(garages));
+        });
+    }
+    private void deleteById(){
+        delete("/user/:ownerId/garage/:garageId/price/:priceId", (request, response) -> {
+            UUID ownerId = UUID.fromString(request.params(":ownerId"));
+            UUID garageId = UUID.fromString(request.params(":garageId"));
+            UUID priceId = UUID.fromString(request.params(":priceId"));
+
             //TODO
-            boolean success = garageService.delete(ownerId, garageId);
+            boolean success = priceService.deleted(ownerId, garageId, priceId);
             response.status(success ? 204 : 400);
             return success ? "Deleted successfully" : "error for delete garage";
         });
     }
     private void update(){
-        put("/user/:ownerId/garage/:garageId", (request, response) -> {
+        put("/user/:ownerId/garage/:garageId/price/:priceId", (request, response) -> {
             UUID ownerId = UUID.fromString(request.params(":ownerId"));
             UUID garageId = UUID.fromString(request.params(":garageId"));
+            UUID priceId = UUID.fromString(request.params(":priceId"));
 
             //TODO
         });

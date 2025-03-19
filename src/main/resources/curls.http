@@ -16,12 +16,52 @@ curl -X POST http://localhost:3000/user/login \
          }'
 
 // create a garage
-curl -X POST http://localhost:3000/garage \
+curl -X POST http://localhost:3000/user/:userId/garage \
      -H "Content-Type: application/json" \
      -d '{
-           "name": "exampleUser",
-           "ownerId": "92eada82-b779-45de-a3af-c3ac6bc2807e"
+           "name": "exampleUser"
          }'
 
 // list all garages
-curl http://localhost:3000/user/92eada82-b779-45de-a3af-c3ac6bc2807e/garage
+curl http://localhost:3000/user/:userId/garage
+
+// delete a garage
+curl -X DELETE http://localhost:3000/user/:userId/garage/:garageId
+
+// update a garage
+curl -X PUT http://localhost:3000/user/:userId/garage/:garageId
+
+// create a price
+curl -X POST http://localhost:3000/user/:userId/garage/:garageId/price \
+     -H "Content-Type: application/json" \
+     -d '{
+
+         }'
+
+// get all prices
+curl http://localhost:3000/user/:userId/garage/:garageId/price
+
+//delete a price
+curl -X DELETE http://localhost:3000/user/:userId/garage/:garageId/price/:priceId
+
+//update a price
+curl -X PUT http://localhost:3000/user/:userId/garage/:garageId/price/:priceId
+
+//park a car
+curl -X POST http://localhost:3000/user/:userId/garage/:garageId/park
+-H "Content-Type: application/json" \
+     -d '{
+            "plate": ""
+         }'
+//park a car
+curl -X POST -F "file=plateImg" http://localhost:3000/user/:userId/garage/:garageId/park/orc
+//remove a car
+curl -X DELETE -F "file=plateImg" http://localhost:3000/user/:userId/garage/:garageId/park/orc
+
+
+// remove a car
+curl -X DELETE http://localhost:3000/user/:userId/garage/:garageId/unpark
+-H "Content-Type: application/json" \
+     -d '{
+            "plate": ""
+         }'

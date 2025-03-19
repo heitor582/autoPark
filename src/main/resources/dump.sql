@@ -19,12 +19,16 @@ CREATE TABLE IF NOT EXISTS garages (
 CREATE TABLE IF NOT EXISTS garage_histories (
     id UUID PRIMARY KEY,
     garage_id UUID NOT NULL,
-    price BIGINT NOT NULL,
+    price BIGINT,
     car_plate TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT now(),
     deleted_at TIMESTAMP DEFAULT NULL,
     FOREIGN KEY (garage_id) REFERENCES garages(id) ON DELETE CASCADE
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS unique_car_plate_active
+ON garage_histories (car_plate)
+WHERE deleted_at IS NULL;
 
 CREATE TABLE IF NOT EXISTS garage_prices (
     id UUID PRIMARY KEY,

@@ -22,11 +22,12 @@ entity garage_histories {
     *id : UUID [PK]
     --
     garage_id : UUID [FK -> garages.id]
-    price : BIGINT
+    price : BIGINT [NULL]
     car_plate : TEXT
     created_at : TIMESTAMP
-    deleted_at : TIMESTAMP
+    deleted_at : TIMESTAMP [NULL]
 }
+{unique (car_plate) WHERE deleted_at IS NULL}
 
 entity garage_prices {
     *id : UUID [PK]
