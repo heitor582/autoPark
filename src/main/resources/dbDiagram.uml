@@ -27,7 +27,9 @@ entity garage_histories {
     created_at : TIMESTAMP
     deleted_at : TIMESTAMP [NULL]
 }
-{unique (car_plate) WHERE deleted_at IS NULL}
+note right of garage_histories
+    deleted_at pode ser NULL
+end note
 
 entity garage_prices {
     *id : UUID [PK]
