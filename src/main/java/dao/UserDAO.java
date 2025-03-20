@@ -93,16 +93,25 @@ public class UserDAO extends DAO {
 	}
 
 
-	public boolean login(final String username, final String password) {
-		String sql = "SELECT 1 FROM users WHERE username = ? AND password = ?";
-		boolean resp = false;
+	public User login(final String username, final String password) {
+		String sql = "SELECT id, username, is_admin, created_at, updated_at FROM users WHERE username = ? AND password = ?";
+		User resp = null;
 
 		try (PreparedStatement st = connection.prepareStatement(sql)) {
 			st.setString(1, username);
 			st.setString(2, toMD5(password));
 
 			try (ResultSet rs = st.executeQuery()) {
-				resp = rs.next();
+				if(rs.next()){
+					resp = new User(
+							rs.getObject("id", UUID.class),
+							rs.getString("username"),
+							"",
+							rs.getBoolean("is_admin"),
+							rs.getTimestamp("created_at").toInstant(),
+							rs.getTimestamp("updated_at").toInstant()
+					);
+				}
 			}
 		} catch (SQLException u) {
 			throw new RuntimeException(u);

@@ -12,7 +12,7 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
-    public boolean login(final String username, final String password) {
+    public User login(final String username, final String password) {
         return userDAO.login(username, password);
     }
 

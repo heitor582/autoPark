@@ -1,8 +1,11 @@
 package controller;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import model.User;
 import service.UserService;
+import utils.Json;
 
 import java.util.UUID;
 
@@ -24,9 +27,10 @@ public class UserController implements Routes {
             String username = jsonObject.get("username").getAsString();
             String password = jsonObject.get("password").getAsString();
 
-            boolean success = userService.login(username, password);
-            response.status(success ? 200 : 401);
-            return success ? "Successfully login" : "Unauthorized";
+            User user = userService.login(username, password);
+            response.status(user != null ? 200 : 401);
+            return new Gson()
+                    .toJsonTree(Json.writeValueAsString(user));
         });
     }
 
@@ -72,5 +76,6 @@ public class UserController implements Routes {
         login();
         create();
         update();
+        deleteById();
     }
 }
