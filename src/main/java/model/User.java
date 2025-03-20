@@ -22,7 +22,8 @@ public class User {
 	}
 
 	public static User create(final String username, final String password, final boolean isAdmin){
-		return new User(UUID.randomUUID(), username, password, isAdmin, Instant.now(), Instant.now());
+		Instant now = Instant.now();
+		return new User(UUID.randomUUID(), username, password, isAdmin, now,now);
 	}
 
 	public User update(final String username, final String password, final boolean isAdmin) {

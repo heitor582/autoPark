@@ -1,11 +1,13 @@
 package model;
 
+import java.math.BigInteger;
 import java.time.Instant;
+import java.util.UUID;
 
 public class Price {
-	private int id;
+	private UUID id;
 	private int aboveTime;
-	private int garageId;
-	private int price;
+	private UUID garageId;
+	private BigInteger price;
 	private Instant createdAt;
 }
