@@ -7,6 +7,14 @@ curl -X POST http://localhost:3000/user \
            "isAdmin": true
          }'
 
+// update an user
+curl -X POST http://localhost:3000/user/:userId \
+     -H "Content-Type: application/json" \
+     -d '{
+           "username": "exampleUser",
+           "password": "securePassword123"
+         }'
+
 // login
 curl -X POST http://localhost:3000/user/login \
      -H "Content-Type: application/json" \

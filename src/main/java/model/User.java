@@ -26,7 +26,7 @@ public class User {
 		return new User(UUID.randomUUID(), username, password, isAdmin, now,now);
 	}
 
-	public User update(final String username, final String password, final boolean isAdmin) {
+	public User update(final String username, final String password) {
 		return new User(this.id, username, password, isAdmin, this.createdAt, Instant.now());
 	}
 

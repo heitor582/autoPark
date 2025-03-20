@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.UUID;
 
+import model.Price;
 import model.User;
 
 public class UserDAO extends DAO {
@@ -17,7 +18,6 @@ public class UserDAO extends DAO {
 		connect();
 	}
 	public boolean insert(final User user) {
-		boolean status = false;
 		String sql = "INSERT INTO users (id, username, password, is_admin, created_at, updated_at) "
 				+ "VALUES (?, ?, ?, ?, ?, ?)";
 		try(PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -31,11 +31,10 @@ public class UserDAO extends DAO {
 
 			stmt.executeUpdate();
 			st.close();
-			status = true;
 		} catch (SQLException u) {  
 			throw new RuntimeException(u);
 		}
-		return status;
+		return true;
 	}
 
 
@@ -58,18 +57,39 @@ public class UserDAO extends DAO {
 	}
 
 
-	public boolean delete(UUID id) {
-		boolean status = false;
+	public boolean delete(final UUID id) {
 		try {  
 			Statement st = connection.createStatement();
 			String sql = "DELETE FROM users WHERE id = " + id;
 			st.executeUpdate(sql);
 			st.close();
-			status = true;
 		} catch (SQLException u) {  
 			throw new RuntimeException(u);
 		}
-		return status;
+		return true;
+	}
+
+	public User getById(final UUID id){
+		String sql = "SELECT * FROM users WHERE id = ?";
+		User user = null;
+		try (PreparedStatement st = connection.prepareStatement(sql)) {
+			st.setObject(1, id);
+ 			try(ResultSet rs = st.executeQuery()) {
+				 if(rs.next()){
+					 user = new User(
+						rs.getObject("id", UUID.class),
+						rs.getString("username"),
+						rs.getString("password"),
+						rs.getBoolean("is_admin"),
+						rs.getTimestamp("created_at").toInstant(),
+						rs.getTimestamp("updated_at").toInstant()
+					 );
+				 }
+			}
+		} catch (SQLException u) {
+			throw new RuntimeException(u);
+		}
+		return user;
 	}
 
 

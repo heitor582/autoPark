@@ -46,23 +46,29 @@ public class GarageController implements Routes{
                             .toJsonTree(Json.writeValueAsString(garages));
         });
     }
+
     private void deleteById(){
         delete("/user/:ownerId/garage/:garageId", (request, response) -> {
             UUID ownerId = UUID.fromString(request.params(":ownerId"));
             UUID garageId = UUID.fromString(request.params(":garageId"));
 
-            //TODO
             boolean success = garageService.delete(ownerId, garageId);
             response.status(success ? 204 : 400);
             return success ? "Deleted successfully" : "error for delete garage";
         });
     }
+
     private void update(){
         put("/user/:ownerId/garage/:garageId", (request, response) -> {
             UUID ownerId = UUID.fromString(request.params(":ownerId"));
-            UUID garageId = UUID.fromString(request.params(":garageId"));
+            UUID id = UUID.fromString(request.params(":garageId"));
+            String body = request.body();
+            JsonObject jsonObject = JsonParser.parseString(body).getAsJsonObject();
+            String name = jsonObject.get("name").getAsString();
 
-            //TODO
+            boolean success = garageService.update(ownerId, id, name);
+            response.status(success ? 200 : 400);
+            return success ? "Update successfully" : "error for update user";
         });
     }
     @Override
