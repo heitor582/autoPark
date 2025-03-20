@@ -62,7 +62,7 @@ public class GarageDAO extends DAO{
     }
 
     public boolean delete(final UUID ownerId, final UUID garageId) {
-        String sql = "DELETE FROM garages WHERE owner_id = ? AND garage_id = ?";
+        String sql = "DELETE FROM garages WHERE owner_id = ? AND id = ?";
         try(PreparedStatement stmt = connection.prepareStatement(sql)) {
             Statement st = connection.createStatement();
             stmt.setObject(1, ownerId);

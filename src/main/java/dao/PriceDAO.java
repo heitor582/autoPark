@@ -15,10 +15,13 @@ import java.util.List;
 import java.util.UUID;
 
 public class PriceDAO extends DAO{
-
+    public PriceDAO() {
+        super();
+        connect();
+    }
     public List<Price> getAllBy(final UUID garageId) {
         List<Price> prices = new ArrayList<>();
-        String sql = "SELECT * FROM prices WHERE garage_id = ?";
+        String sql = "SELECT * FROM garage_prices WHERE garage_id = ?";
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setObject(1, garageId);
@@ -41,7 +44,7 @@ public class PriceDAO extends DAO{
     }
 
     public boolean delete(final UUID garageId, final UUID priceId) {
-        String sql = "DELETE FROM prices WHERE garage_id = ? AND price_id = ?";
+        String sql = "DELETE FROM garage_prices WHERE garage_id = ? AND id = ?";
         try(PreparedStatement stmt = connection.prepareStatement(sql)) {
             Statement st = connection.createStatement();
             stmt.setObject(1, garageId);
@@ -56,7 +59,7 @@ public class PriceDAO extends DAO{
     }
 
     public boolean create(final Price price) {
-        String sql = "INSERT INTO prices (id, above_time, garage_id, price, created_at)"
+        String sql = "INSERT INTO garage_prices (id, above_time, garage_id, price, created_at)"
                 + "VALUES (?, ?, ?, ?, ?)";
         try(PreparedStatement stmt = connection.prepareStatement(sql)) {
             Statement st = connection.createStatement();
@@ -76,12 +79,12 @@ public class PriceDAO extends DAO{
 
     public boolean update(final UUID garageId, final UUID priceId, final int aboveTime, final BigInteger price) {
         boolean status = false;
-        String sql = "UPDATE garages SET above_time = ?, price = ? WHERE id = ? and garage_id = ?";
+        String sql = "UPDATE garage_prices SET above_time = ?, price = ? WHERE id = ? and garage_id = ?";
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, aboveTime);
             st.setLong(2, price.longValueExact());
-            st.setObject(3, price);
+            st.setObject(3, priceId);
             st.setObject(4, garageId);
 
             int rowsAffected = st.executeUpdate();

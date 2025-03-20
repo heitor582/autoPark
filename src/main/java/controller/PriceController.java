@@ -25,7 +25,7 @@ public class PriceController implements Routes{
     }
 
     private void create(){
-        post("/user/:ownerId/garage/:garageId", (request, response) -> {
+        post("/user/:ownerId/garage/:garageId/price", (request, response) -> {
             UUID garageId = UUID.fromString(request.params(":garageId"));
             String body = request.body();
             JsonObject jsonObject = JsonParser.parseString(body).getAsJsonObject();

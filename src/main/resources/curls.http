@@ -8,10 +8,10 @@ curl -X POST http://localhost:3000/user \
          }'
 
 // update an user
-curl -X POST http://localhost:3000/user/:userId \
+curl -X PUT http://localhost:3000/user/:userId \
      -H "Content-Type: application/json" \
      -d '{
-           "username": "exampleUser",
+           "username": "exampleUser2",
            "password": "securePassword123"
          }'
 
@@ -30,7 +30,7 @@ curl -X DELETE http://localhost:3000/user/:userId/
 curl -X POST http://localhost:3000/user/:userId/garage \
      -H "Content-Type: application/json" \
      -d '{
-           "name": "exampleUser"
+           "name": "exampleUser2"
          }'
 
 // list all garages
@@ -40,13 +40,18 @@ curl http://localhost:3000/user/:userId/garage
 curl -X DELETE http://localhost:3000/user/:userId/garage/:garageId
 
 // update a garage
-curl -X PUT http://localhost:3000/user/:userId/garage/:garageId
+curl -X PUT http://localhost:3000/user/:userId/garage/:garageId \
+-H "Content-Type: application/json" \
+     -d '{
+           "name": "garage"
+         }'
 
 // create a price
 curl -X POST http://localhost:3000/user/:userId/garage/:garageId/price \
      -H "Content-Type: application/json" \
      -d '{
-
+            "price": 100,
+            "aboveTime": 60
          }'
 
 // get all prices
@@ -56,7 +61,12 @@ curl http://localhost:3000/user/:userId/garage/:garageId/price
 curl -X DELETE http://localhost:3000/user/:userId/garage/:garageId/price/:priceId
 
 //update a price
-curl -X PUT http://localhost:3000/user/:userId/garage/:garageId/price/:priceId
+curl -X PUT http://localhost:3000/user/:userId/garage/:garageId/price/:priceId \
+     -H "Content-Type: application/json" \
+     -d '{
+            "price": 100,
+            "aboveTime": 70
+         }'
 
 //park a car
 curl -X POST http://localhost:3000/user/:userId/garage/:garageId/park

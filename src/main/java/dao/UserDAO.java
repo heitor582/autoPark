@@ -58,15 +58,15 @@ public class UserDAO extends DAO {
 
 
 	public boolean delete(final UUID id) {
-		try {  
-			Statement st = connection.createStatement();
-			String sql = "DELETE FROM users WHERE id = " + id;
-			st.executeUpdate(sql);
-			st.close();
-		} catch (SQLException u) {  
-			throw new RuntimeException(u);
+		String sql = "DELETE FROM users WHERE id = ?";
+
+		try (PreparedStatement ps = connection.prepareStatement(sql)) {
+			ps.setObject(1, id);
+			int affectedRows = ps.executeUpdate();
+			return affectedRows > 0;
+		} catch (SQLException e) {
+			throw new RuntimeException("Error deleting user with ID: " + id, e);
 		}
-		return true;
 	}
 
 	public User getById(final UUID id){

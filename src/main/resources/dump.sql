@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS users (
     id UUID PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     is_admin BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMP NOT NULL DEFAULT now(),
@@ -36,5 +36,6 @@ CREATE TABLE IF NOT EXISTS garage_prices (
     garage_id UUID NOT NULL,
     price BIGINT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT now(),
-    FOREIGN KEY (garage_id) REFERENCES garages(id) ON DELETE CASCADE
+    FOREIGN KEY (garage_id) REFERENCES garages(id) ON DELETE CASCADE,
+    UNIQUE (above_time, id)
 );
