@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -18,7 +19,6 @@ public class GarageDAO extends DAO{
     }
 
     public boolean insert(final Garage garage) {
-        boolean status = false;
         String sql = "INSERT INTO garages (id, name, owner_id, created_at, updated_at)"
                 + "VALUES (?, ?, ?, ?, ?)";
         try(PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -31,11 +31,10 @@ public class GarageDAO extends DAO{
 
             stmt.executeUpdate();
             st.close();
-            status = true;
         } catch (SQLException u) {
             throw new RuntimeException(u);
         }
-        return status;
+        return true;
     }
 
     public List<Garage> getAllBy(final UUID ownerId) {
@@ -62,4 +61,36 @@ public class GarageDAO extends DAO{
         return garages;
     }
 
+    public boolean delete(final UUID ownerId, final UUID garageId) {
+        String sql = "DELETE FROM garages WHERE owner_id = ? AND id = ?";
+        try(PreparedStatement stmt = connection.prepareStatement(sql)) {
+            Statement st = connection.createStatement();
+            stmt.setObject(1, ownerId);
+            stmt.setObject(2, garageId);
+
+            stmt.executeUpdate();
+            st.close();
+        } catch (SQLException u) {
+            throw new RuntimeException(u);
+        }
+        return true;
+    }
+
+    public boolean update(UUID ownerId, UUID id, String name) {
+        boolean status = false;
+        String sql = "UPDATE garages SET name = ?, updated_at = ? WHERE id = ? and owner_id = ?";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, name);
+            st.setTimestamp(2, Timestamp.from(Instant.now()));
+            st.setObject(3, id);
+            st.setObject(4, ownerId);
+
+            int rowsAffected = st.executeUpdate();
+            status = rowsAffected > 0;
+        } catch (SQLException u) {
+            throw new RuntimeException(u);
+        }
+        return status;
+    }
 }

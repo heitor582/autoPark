@@ -22,11 +22,14 @@ entity garage_histories {
     *id : UUID [PK]
     --
     garage_id : UUID [FK -> garages.id]
-    price : BIGINT
+    price : BIGINT [NULL]
     car_plate : TEXT
     created_at : TIMESTAMP
-    deleted_at : TIMESTAMP
+    deleted_at : TIMESTAMP [NULL]
 }
+note right of garage_histories
+    unique constraint on car_plate when deleted_at is null
+end note
 
 entity garage_prices {
     *id : UUID [PK]
@@ -36,6 +39,9 @@ entity garage_prices {
     price : BIGINT
     created_at : TIMESTAMP
 }
+note right of garage_prices
+    unique constraint on id + above_time
+end note
 
 users ||--o{ garages : owns
 garages ||--o{ garage_histories : has
