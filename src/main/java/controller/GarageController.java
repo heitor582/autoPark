@@ -46,7 +46,6 @@ public class GarageController implements Routes{
                             .toJsonTree(Json.writeValueAsString(garages));
         });
     }
-
     private void deleteById(){
         delete("/user/:ownerId/garage/:garageId", (request, response) -> {
             UUID ownerId = UUID.fromString(request.params(":ownerId"));

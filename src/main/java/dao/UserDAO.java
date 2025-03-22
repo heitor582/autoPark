@@ -55,8 +55,6 @@ public class UserDAO extends DAO {
 		}
 		return status;
 	}
-
-
 	public boolean delete(final UUID id) {
 		String sql = "DELETE FROM users WHERE id = ?";
 
